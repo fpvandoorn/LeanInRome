@@ -2,15 +2,7 @@
 
 24-26 January 2024
 
-## In this repository
-
-You will find the Lean files in the `LeanInRome` directory:
-* The `Lectures` folder contains all lectures
-* The `Assignments` folder contains the assignments that you have to hand in via eCampus
-* The `MIL` folder contains the exercises from the book Mathematics in Lean (so that you don't have to separately clone the `mathematics_in_lean` repository). You can find the textbook online here:
-[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/)
-(or as a
-[pdf document](https://leanprover-community.github.io/mathematics_in_lean/mathematics_in_lean.pdf)).
+See the subfolder `LeanInRome` for the `.lean` files.
 
 ## Installation
 
@@ -40,8 +32,6 @@ Note: To get this repository, you will need to download Lean's mathematical libr
 
 * Test that everything is working by opening `LeanInRome/Test.lean`.
   It is normal if it takes 10-40 seconds for Lean to start up.
-
-* More files will be added to this repository during the tutorial. The first exercises are in `LeanInRome/MIL/C02_Basics/S01_Calculating.lean`.
 
 ### Update the repository
 
