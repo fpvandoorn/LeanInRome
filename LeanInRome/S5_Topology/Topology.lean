@@ -1,4 +1,4 @@
-import Mathlib.Tactic
+import LeanInRome.Common
 import Mathlib.Topology.Instances.Real
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
@@ -16,6 +16,7 @@ namespace TopologySession
 
 
 
+/- # Limits -/
 
 
 /-
@@ -27,7 +28,8 @@ Say `f : ℝ → ℝ`. There are many variants of limits.
 * variations of the above with the additional assumption that `x ≠ x₀`.
 
 This gives 8 different notions of behavior of `x`.
-Similarly, the value `f(x)` can have the same behavior: `f(x)` tends to `∞`, `-∞`, `x₀`, `x₀⁺`, ...
+Similarly, the value `f(x)` can have the same behavior:
+`f(x)` tends to `∞`, `-∞`, `x₀`, `x₀⁺`, ...
 
 This gives `64` notions of limits.
 
@@ -49,16 +51,12 @@ Solution: use filters.
 
 
 
-
-
-
-
 If `X` is a type, a filter `F : Filter X` is a
 collection of sets `F.sets : Set (Set X)` satisfying the following:
 -/
 section Filter
 
-variable {X Y : Type _} (F : Filter X)
+variable {X Y : Type*} (F : Filter X)
 
 #check (F.sets : Set (Set X))
 #check (F.univ_sets : univ ∈ F.sets)
@@ -81,6 +79,9 @@ Examples of filters:
 `{n | n ≥ N}` for some `N` -/
 #check (atTop : Filter ℕ)
 
+example {s : Set ℝ} : s ∈ atTop ↔
+  ∃ N, ∀ n ≥ N, n ∈ s := by exact?
+
 /- `𝓝 x`, made of neighborhoods of `x` in a topological space -/
 #check (𝓝 3 : Filter ℝ)
 
@@ -93,9 +94,12 @@ as a generalized element of `Set X`.
 * `atTop` is the "set of very large numbers"
 * `𝓝 x₀` is the "set of points very close to `x₀`."
 * For each `s : Set X` we have the so-called *principal filter*
-  `𝓟 s` consisting of all sets that contain `s` (exercise!).
+  `𝓟 s` consisting of all sets that contain `s`.
 -/
 
+
+example {s t : Set ℝ} : t ∈ 𝓟 s ↔ s ⊆ t :=
+  by exact?
 
 
 
@@ -103,30 +107,30 @@ as a generalized element of `Set X`.
 
 /- Operations on filters -/
 
-/- the *pushforward* of filters -/
-example (f : X → Y) : Filter X → Filter Y :=
+/- the *pushforward* of filters generalizes images of sets. -/
+example {X Y : Type*} (f : X → Y) : Filter X → Filter Y :=
   Filter.map f
 
-example (f : X → Y) (F : Filter X) (V : Set Y) :
+example {X Y : Type*} (f : X → Y) (F : Filter X) (V : Set Y) :
     V ∈ Filter.map f F ↔ f ⁻¹' V ∈ F := by
   rfl
 
-/- the *pullback* of filters generalizes -/
-example (f : X → Y) : Filter Y → Filter X :=
+/- the *pullback* of filters generalizes preimages -/
+example {X Y : Type*} (f : X → Y) : Filter Y → Filter X :=
   Filter.comap f
 
 /- These form a *Galois connection* / adjunction -/
-example (f : X → Y) (F : Filter X) (G : Filter Y) :
+example {X Y : Type*} (f : X → Y) (F : Filter X) (G : Filter Y) :
     Filter.map f F ≤ G ↔ F ≤ Filter.comap f G := by
   exact?
 
 /- `Filter X` has an order that turns it into a complete lattice. The order is reverse inclusion: -/
-example (F F' : Filter X) :
+example {X : Type*} (F F' : Filter X) :
     F ≤ F' ↔ ∀ V : Set X, V ∈ F' → V ∈ F := by
   rfl
 
 /- This makes the principal filter `𝓟 : Set X → Filter X` monotone. -/
-example : Monotone (𝓟 : Set X → Filter X) := by
+example {X : Type*} : Monotone (𝓟 : Set X → Filter X) := by
   exact?
 
 
@@ -136,11 +140,11 @@ example : Monotone (𝓟 : Set X → Filter X) := by
 
 
 /- Using these operations, we can define the limit. -/
-def Tendsto {X Y : Type _} (f : X → Y)
+def MyTendsto {X Y : Type*} (f : X → Y)
     (F : Filter X) (G : Filter Y) :=
   map f F ≤ G
 
-def Tendsto_iff {X Y : Type _} (f : X → Y)
+def Tendsto_iff {X Y : Type*} (f : X → Y)
     (F : Filter X) (G : Filter Y) :
     Tendsto f F G ↔ ∀ S : Set Y, S ∈ G → f ⁻¹' S ∈ F := by
   rfl
@@ -158,19 +162,24 @@ example (f : ℝ → ℝ) (x₀ y₀ : ℝ) : Prop :=
   Tendsto f (𝓝[<] x₀) (𝓝[≥] y₀)
 
 /- Now the following states all possible composition lemmas all at
-once!-/
-example {X Y Z : Type _} {F : Filter X} {G : Filter Y} {H : Filter Z}
+once! -/
+example {X Y Z : Type*} {F : Filter X} {G : Filter Y} {H : Filter Z}
     {f : X → Y} {g : Y → Z}
     (hf : Tendsto f F G) (hg : Tendsto g G H) :
-    Tendsto (g ∘ f) F H :=
-  sorry -- exercise!
-
+    Tendsto (g ∘ f) F H := by {
+  rw [Tendsto] at *
+  calc
+    map (g ∘ f) F = map g (map f F) := by exact rfl
+    _ ≤ map g G := by gcongr
+    _ ≤ H := by assumption
+}
 
 
 /-
 Filters also allow us to reason about things that are
 "eventually true". If `F : Filter X` and `P : X → Prop` then
-`∀ᶠ n in F, P n` means that `P n` is eventually true for `n` in `F`. It is defined to be `{ x | P x } ∈ F`.
+`∀ᶠ n in F, P n` means that `P n` is eventually true for `n` in `F`.
+It is defined to be `{ x | P x } ∈ F`.
 
 The following example shows that if `P n` and `Q n` hold for
 sufficiently large `n`, then so does `P n ∧ Q n`.
@@ -192,8 +201,19 @@ section Topology
 
 /- Let's look at the definition of topological space. -/
 
-variable {X : Type _} [TopologicalSpace X]
-variable {Y : Type _} [TopologicalSpace Y]
+variable {X : Type*} [TopologicalSpace X]
+variable {Y : Type*} [TopologicalSpace Y]
+
+
+example {ι : Type*} (s : ι → Set X) :
+    interior (⋂ i, s i) ⊆ ⋂ i, interior (s i) := by {
+  intro x hx
+  simp
+  intro i
+  apply interior_mono ?_ hx
+  exact iInter_subset (fun i ↦ s i) i
+}
+
 
 /- A map between topological spaces is continuous if the
 preimages of open sets are open. -/
@@ -226,10 +246,8 @@ example {x : X} {s : Set X} :
 
 example {x : X} {s : Set X} (h : s ∈ 𝓝 x) : x ∈ s := by
   rw [mem_nhds_iff] at h
-  rcases h with ⟨t, hts, ht, hxt⟩
+  obtain ⟨t, hts, ht, hxt⟩ := h
   exact hts hxt
-
-
 
 
 
@@ -245,8 +263,7 @@ example : T0Space X ↔ Injective (𝓝 : X → Filter X) := by
 example : T1Space X ↔ ∀ x, IsClosed ({ x } : Set X) :=
   ⟨by exact?, by exact?⟩
 
-example : T2Space X ↔
-    ∀ x y : X, x ≠ y → Disjoint (𝓝 x) (𝓝 y) := by
+example : T2Space X ↔ Pairwise (fun x y : X => Disjoint (𝓝 x) (𝓝 y)) := by
   exact?
 
 example : RegularSpace X ↔ ∀ {s : Set X} {a},
@@ -269,6 +286,8 @@ example {K : Set X} : IsCompact K ↔ ∀ {ι : Type _}
     ∃ t : Finset ι, K ⊆ ⋃ i ∈ t, U i := by
   exact?
 
+#check CompactSpace
+
 /-
 This can also be reformulated using filters.
 * `NeBot F` iff `F ≠ ⊥` iff `∅ ∉ F`
@@ -281,7 +300,7 @@ This can also be reformulated using filters.
 example (F : Filter X) : NeBot F ↔ F ≠ ⊥ := by
   exact?
 
-example (F : Filter X) :
+example {x : X} (F : Filter X) :
     ClusterPt x F ↔ NeBot (𝓝 x ⊓ F) := by
   rfl
 
@@ -306,7 +325,7 @@ end Topology
 
 section Metric
 
-variable {X Y : Type _} [MetricSpace X] [MetricSpace Y]
+variable {X Y : Type*} [MetricSpace X] [MetricSpace Y]
 
 /- A metric space is a type `X` equipped with a distance function `dist : X → X → ℝ` with the following properties. -/
 
@@ -333,5 +352,3 @@ example (s : Set X) :
   Metric.isOpen_iff
 
 end Metric
-
-end TopologySession
