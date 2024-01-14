@@ -61,7 +61,7 @@
    "rev": "e659b1b3c9ad1535ef5f4ec13280a382fe457aee",
    "name": "mathlib",
    "manifestFile": "lake-manifest.json",
-   "inputRev": "master",
+   "inputRev": "e659b1b3c9ad1535ef5f4ec13280a382fe457aee",
    "inherited": false,
    "configFile": "lakefile.lean"}],
  "name": "leanInRome",
