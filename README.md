@@ -15,11 +15,11 @@ Note: To get this repository, you will need to download Lean's mathematical libr
 * Open Visual Studio Code
 * Press `Clone Git Repository` (if you don't see the welcome screen, you can press `ctrl+shift+P` (or `cmd+shift+P` on Mac, type `Git: Clone` and press `enter`)
 * Type `https://github.com/fpvandoorn/LeanInRome.git` and press enter
-* Choose a folder where you want to clone this repository (everything will be placed in a subfolder `LeanInRome`).
 ![1](img/ss1.png)
 
+* Choose a folder where you want to clone this repository (everything will be placed in a subfolder `LeanInRome`).
 * Press `open` when asked if you want to open the cloned repository
-* Open the file `LeanInRome/Test.lean` using the explorer button in the top-right. Do **not** press `Restart Lean` or `Rebuild Imports` when these pop-ups shows up before you do the next step.
+* Open the file `LeanInRome/Test.lean` using the explorer button in the top-right. Do **not** press `Restart Lean` or `Rebuild Imports` when these pop-ups show up. (If you do, you will rebuild mathlib yourself, which is not recommended)
 
 ![2](img/ss2.png)
 * In the top-middle (or top-right) of the screen there is a Lean menu marked by `∀`.
@@ -28,7 +28,7 @@ Note: To get this repository, you will need to download Lean's mathematical libr
 
 ![3](img/ss3.png)
 
-* Once this is finished, press the `Rebuild Imports` button.
+* Once this is finished, press the `Rebuild Imports` button. The file should be ready a few seconds later. If you see a blue squiggle under `#eval`, Lean is running correctly.
 
 ### Get the Repository using a terminal
 
