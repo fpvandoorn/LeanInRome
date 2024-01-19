@@ -16,6 +16,7 @@ example : ∀ m n : ℕ, Even n → Even (m * n) := by
   rw [hk]
   -- and now it's obvious.
   ring
+  done
 
 -- These are pieces of data.
 #check 2 + 2
@@ -56,9 +57,11 @@ fun m n ⟨k, hk⟩ ↦ ⟨m * k, by rw [hk, mul_add]⟩
 
 example : ∀ m n : ℕ, Even n → Even (m * n) := by
   rintro m n ⟨k, hk⟩; use m * k; rw [hk]; ring
+  done
 
 example : ∀ m n : ℕ, Even n → Even (m * n) := by
   intros; simp [*, parity_simps]
+  done
 
 example : ∀ (n : ℕ), ∃ p, p.Prime ∧ p > n := by
   intro n
@@ -82,3 +85,4 @@ example : ∀ (n : ℕ), ∃ p, p.Prime ∧ p > n := by
     have hnotdvdone : ¬ p ∣ 1 := by
       exact (Nat.Prime.not_dvd_one hp)
     contradiction
+  done
