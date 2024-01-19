@@ -7,9 +7,11 @@ open Nat
 -- Here is a first theorem
 example : ∀ m n : ℕ, Even n → Even (m * n) := by
   -- Say m and n are natural numbers, and assume n is even.
-  intro m n h
+  intro m n
+  -- Suppose n is even
+  intro hn
   -- Let k be such that n = 2*k
-  obtain ⟨k, hk⟩ := h
+  obtain ⟨k, hk⟩ := hn
   -- We need to prove m*n is twice a natural number. Let's show it's twice m*k.
   use m * k
   -- Substitute for n,
