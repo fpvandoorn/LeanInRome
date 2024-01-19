@@ -13,7 +13,7 @@ Note: To get this repository, you will need to download Lean's mathematical libr
 ### Get the Repository using VSCode
 
 * Open Visual Studio Code
-* Press `Clone Git Repository` (if you don't see the welcome screen, you can press `ctrl+shift+P` (or `cmd+shift+P` on Mac, type `Git: Clone` and press `enter`)
+* Press `Clone Git Repository` (if you don't see the welcome screen, you can press `ctrl+shift+P` or `cmd+shift+P` on Mac, type `Git: Clone` and press `enter`))
 * Type `https://github.com/fpvandoorn/LeanInRome.git` and press enter
 ![1](img/ss1.png)
 
@@ -68,7 +68,7 @@ If you have already followed the steps above, and want to update the repository,
 Optional: some users find it useful to download the `Error Lens` extension. This displays Lean messages directly in your source file.
 To get it, in the left bar of VSCode, click on the `Extensions` button (4-th button), and search and install the extension `Error Lens`. It will start automatically.
 
-## Altenative ways to use Lean
+## Alterative ways to use Lean
 
 You can use Codespaces or Gitpod if you have trouble installing Lean locally. These work fine, but not as well as a locally installed copy of Lean.
 
