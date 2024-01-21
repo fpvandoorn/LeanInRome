@@ -2,21 +2,114 @@ import Mathlib
 
 open Set Function Classical
 
+
 set_option autoImplicit false
 
 /- # Sets-/
 
-example (α : Type) (s t w : Set α) (hst : s ⊆ t) (htw : t ⊆ w) : s ⊆ w := by sorry
+-- A double inclusion
+example (α : Type) (S T W : Set α) (hST : S ⊆ T) (hTW : T ⊆ W) : S ⊆ W := by sorry
 
--- una intersezione
 
-example (α : Type) (s t : Set α) (h : s ⊆ t) : s \ t = ∅ := by sorry
+
+
+
+
+
+
+
+
+
+
+
+-- Self-intersection is the identity, proven with **extensionality**
+example (α : Type) (S : Set α) : S ∩ S = S := by sorry
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- The difference
+example (α : Type) (S T : Set α) (h : T ⊆ S) : T \ S = ∅ := by sorry
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 /- # Functions-/
 
-example (α β : Type) (S : Set α) (f g : S → β) : f = g ↔ ∀ a : α,
-  a ∈ S → f a = g a := by sorry
+-- Functions do not natively act on elements of sets: how can we fix this code?
+example (α β : Type) (S : Set α) (f g : S → β) :
+  f = g ↔ ∀ a : α, (ha : a ∈ S) → f a = g a := by sorry
 
-example (α β : Type) (f : α → β) : Set α → Set β := by sorry
+
+
+
+
+
+
+
+
+
+
+
+
+variable (α β : Type) (f : α → β)
+
+-- We can upgrade a function `f` to a function between sets, using the image:
+example : Set α → Set β := by sorry
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- The range is not *definitionally equal* to the image of the universal set: use extensionality!
+example : range f = f '' univ := by sorry
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Why is the following a *statement* and not merely the *definition* of being injective?
+example : Injective f ↔ InjOn f univ := by sorry

@@ -22,34 +22,35 @@ Yet sometimes we really want to speak about *sets* as collections of elements an
 
 +++ Any set lives in a given type: it is a set of elements (*terms*) of a type:
 ```lean
-(α : Type) (S : Set X)
+(α : Type) (S : Set α)
 ```
 expresses that α is any type and `S` is a set of elements/terms of the type α. On the other hand,
 ```lean
-S : Set
+(S : Set)
 ```
 does not mean "let `S` be a set": it means nothing and it is an error.
 +++
 
-+++ A set **coincides** with the property defining it
++++ A set **coincides** with the property defining it.
 
  Given a type α, a set `S` (of α) is a *function*
 ```lean
 S : α → Prop
 ```
-You can think of this function as being the characteristic function of $S$; indeed, the $\in$ symbol means that the value of `S` is `True`:
+so `(Set α) = (α → Prop)`.
+
+You can think of this function as being the characteristic function of `S`; indeed, the `∈` symbol means that the value of `S` is `True`:
 ```lean
-example (α : Type)(x : α) (S : Set α) : x ∈ S ↔ S x := rfl
+example (α : Type) (x : α) (S : Set α) : x ∈ S ↔ S x := rfl
 ```
 You might think that $x \in S$ is the proposition that is true when $x$ belongs to $S$ and is false otherwise.
 +++
 
 +++ Sub(sub-sub-sub)sets are not treated as sets-inside-sets.
-<br>
 
 Let's think old-stylish for a moment:
 +++ Given a set $S$, what is a subset $T$ of $S$ *for you*?
-1. Another set such that $x\in T\Rightarrow x \in S$
+1. Another set such that $x\in T\Rightarrow x \in S$.
 1. A set of elements of $S$.
 1. ... is there **any difference** whatsoever ?!
 
@@ -59,52 +60,65 @@ Let's think old-stylish for a moment:
  -->
 So, given two sets  `S T : Set α`, the property that `T` is a subset of `S` is an *implication*
 ```lean
-def T ⊆ S := ∀ a, a ∈ T → a ∈ S
+def (T ⊆ S : Prop) := ∀ a, a ∈ T → a ∈ S
 ```
-Let's see a live example!
+Let's see a live example.
 +++
 
 ### Main constructions
 +++ Intersection
+Given sets `S T : Set α` we have the
 ```lean
-def (S T : Set α) : S ∩ T := fun a => a ∈ S ∧ a ∈ T
+def (S ∩ T : Set α) := fun a => a ∈ S ∧ a ∈ T
 ```
+On the way of proving a simple statement about self-intersection, we encounter **extensionality**: this is the principle saying that to check that two sets (or set-like objects...) are *equal* it is enough to check on elements.
+
 +++
 
 +++ Union
+Given sets `S T : Set α` we have the
 ```lean
-def (S T : Set α) : S ∪ T := fun a => a ∈ S ∨ a ∈ T
+def (S ∪ T : Set α) := fun a => a ∈ S ∨ a ∈ T
 ```
+
+And if `S : Set α` but `T : Set β`?
 +++
 
-+++ The empty set
-This is the constant function `False : Prop` (and not `false : Bool`!)
++++ The empty set and the universal set
+The first is the constant function `False : Prop` (and not `false : Bool`!)
 ```lean
 def (∅ : Set α) := False
 ```
+While the second (containing all terms of `α`) is the constant function
+```lean
+def (univ : Set α) := True
+```
 +++
 
-+++ Set subtraction TODO
-Given sets...
++++ Set difference
+Given sets `S T : Set α`, we can define their difference `S \ T : Set α`, that corresponds to the property
+```lean
+def (S \ T : Set α) = fun a => a ∈ S ∨ a ∉ T
+```
 
 Let's see now an example combining subtraction and the empty set.
 +++
 
 +++ Indexed intersection and union
-Instead of interscting and taking unions of *two* sets, we can allow fancier indexing sets (that will actually be **types**, *ça va sans dire*): for the intersection, for instance, we have
+Instead of intersecting and taking unions of *two* sets, we can allow fancier indexing sets (that will actually be *types*, *ça va sans dire*): more on this in the exercise sheets.
 +++
 
 
 ## Functions
 
-As said, functions **among types** are *primitives*, so we do not expect to find a definition for them. Still, we want to speak about functions among *sets*, and they will most likely be different gadgets, requiring a small change of perspective.
+As said, functions among types are *primitive notions*, so we do not expect to find a definition for them. Still, we want to speak about functions among *sets*, and indeed **functions among sets are different gadgets than functions among types**. This requires a small change of perspective.
 
 Let's inspect the following code:
 ```lean
 example (α β : Type) (S : Set α) (f g : S → β) :
     f = g ↔ ∀ a : α, a ∈ S → f a = g a :=
 ```
-+++ It *seems* to say that given two functions `f, g` whose domain is a set `s` of elements in `α`, they are equal if and only if they coincide on every element of the domain, yet...
++++ It *seems* to say that given two functions `f, g` whose domain is a set `S` of elements in `α`, they are equal if and only if they coincide on every element of the domain, yet...
 
 ```
 application type mismatch
@@ -127,22 +141,36 @@ Given a function `f : α → β` and sets `(S : Set α), (T : Set β)`, there ar
 +++ The image of `S` through `f`, noted `f '' S`.
 This is the *set* `f '' S : Set β` whose defining property is
 ```lean
-∃ x, x ∈ S ∧ f x = a
+f'' S := fun b => ∃ x, x ∈ S ∧ f x = b
 ```
+So, you can upgrade a function `f` to a function between the types of sets.
 +++
 
 +++ The range of `f`, equivalent to `f '' univ`.
 I write *equivalent* because the defining property is
 ```lean
-range f := fun a => ∃ x, f x = a : β → Prop
+range f := (fun b => ∃ x, f x = b) : β → Prop = (Set β)
 ```
-Can you see why this is not the verbatim definition of `f '' univ`? If not, there is an exercise waiting...
+This is not the verbatim definition of `f '' univ` ...
 +++
 
 +++ The preimage of `T` through `f`, noted `f ⁻¹' T`.
-This is
+This is the set
+```lean
+fun a => f a ∈ T : α → Prop
+```
+
 +++
 
-+++ The function `f` is **injective on `s`**, denoted by `InjOn f s` if it is injective (a notion defined for functions **between types**) when restricted to `s`.
-This is
++++ The function `f` is **injective on `S`**, denoted by `InjOn f S` if it is injective (a notion defined for functions **between types**) when restricted to `S`: this reads
+```lean
+def : InjOn f S ↔ ∀ x₁ ∈ S, ∀ x₂ ∈ S, f x₁ = f x₂ → x₁ = x₂
+```
+
+In particular, the following equivalence is not a tautology:
+```lean
+example : Injective f ↔ InjOn f univ
+```
+
+Let's finish proving it, then!
 +++
