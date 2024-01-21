@@ -7,6 +7,15 @@ set_option autoImplicit false
 
 /- # Sets-/
 
+-- def PositiveReals
+
+
+
+
+
+
+
+
 -- A double inclusion
 example (α : Type) (S T W : Set α) (hST : S ⊆ T) (hTW : T ⊆ W) : S ⊆ W := by sorry
 
@@ -24,6 +33,8 @@ example (α : Type) (S T W : Set α) (hST : S ⊆ T) (hTW : T ⊆ W) : S ⊆ W :
 
 -- Self-intersection is the identity, proven with **extensionality**
 example (α : Type) (S : Set α) : S ∩ S = S := by sorry
+
+
 
 
 
@@ -55,12 +66,11 @@ example (α : Type) (S T : Set α) (h : T ⊆ S) : T \ S = ∅ := by sorry
 
 
 
-
 /- # Functions-/
 
 -- Functions do not natively act on elements of sets: how can we fix this code?
 example (α β : Type) (S : Set α) (f g : S → β) :
-  f = g ↔ ∀ a : α, (ha : a ∈ S) → f a = g a := by sorry
+  f = g ↔ ∀ a : α, a ∈ S → f a = g a := by sorry
 
 
 

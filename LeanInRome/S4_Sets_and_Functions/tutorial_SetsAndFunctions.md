@@ -4,12 +4,12 @@
 Sets are **primitive** objects when doing classical, old-school, pen-and-paper mathematics: there is no *definition* of what a set is, there are only *rules* about how these objects work, governing their behaviour under unions, intersections, etc. For Lean, sets are **no longer primitive objects**, but the same rules hold.
 
 
-In the same vein, for Lean functions are **primitive** objects: there is no *definition* of what a function (between two "types") is, there are only *rules* about how these fundamental objects behave.
+In the same vein, for Lean functions are **primitive** objects: there is no *definition* of what a function (between two "types") is, there are only **rules** about how these fundamental objects behave.
 
 Concretely, that's all you need: one rarely (never?) uses that in set-theoretic language a function between $S$ and $T$ is really a subset of $S\times T$ satisfying some property.
 
 +++ At the end of the day, everything is the same.
-But in the morning, things seem different, and it takes a while to get used to them.
+But at 10:00 AM in the morning, things seem different, and it takes a while to get used to them.
 +++
 
 ## Sets
@@ -22,18 +22,18 @@ Yet sometimes we really want to speak about *sets* as collections of elements an
 
 +++ Any set lives in a given type: it is a set of elements (*terms*) of a type:
 ```lean
-(α : Type) (S : Set α)
+variable (α : Type) (S : Set α)
 ```
-expresses that α is any type and `S` is a set of elements/terms of the type α. On the other hand,
+expresses that `α` is any type and `S` is a set of elements/terms of the type `α`. On the other hand,
 ```lean
-(S : Set)
+variable (S : Set)
 ```
 does not mean "let `S` be a set": it means nothing and it is an error.
 +++
 
-+++ A set **coincides** with the property defining it.
++++ A set **coincides** with the test-function defining it.
 
- Given a type α, a set `S` (of α) is a *function*
+ Given a type `α`, a set `S` (of `α`) is a *function*
 ```lean
 S : α → Prop
 ```
@@ -43,7 +43,7 @@ You can think of this function as being the characteristic function of `S`; inde
 ```lean
 example (α : Type) (x : α) (S : Set α) : x ∈ S ↔ S x := rfl
 ```
-You might think that $x \in S$ is the proposition that is true when $x$ belongs to $S$ and is false otherwise.
+You might think that `x ∈ S` is the proposition that is true when `x` belongs to `S` and is false otherwise. So, the positive reals are a *function*!
 +++
 
 +++ Sub(sub-sub-sub)sets are not treated as sets-inside-sets.
@@ -51,10 +51,10 @@ You might think that $x \in S$ is the proposition that is true when $x$ belongs 
 Let's think old-stylish for a moment:
 +++ Given a set $S$, what is a subset $T$ of $S$ *for you*?
 1. Another set such that $x\in T\Rightarrow x \in S$.
-1. A set of elements of $S$.
-1. ... is there **any difference** whatsoever ?!
+1. A collection of elements of $S$.
+1. ... is there **any difference** whatsoever?!
 
-**Yes**: you can either stress the fact that it is a honest set satisfying some property; or the fact that it is a set whose "ambient space" is $S$. We take the first approach.
+**Yes**: you can either stress the fact that it is a honest set satisfying some property; or the fact that it is a set whose "ambient space" is $S$. We take the **first approach**.
 
 <!-- <br>
  -->
@@ -62,7 +62,7 @@ So, given two sets  `S T : Set α`, the property that `T` is a subset of `S` is 
 ```lean
 def (T ⊆ S : Prop) := ∀ a, a ∈ T → a ∈ S
 ```
-Let's see a live example.
+Let's see an example.
 +++
 
 ### Main constructions
@@ -71,7 +71,7 @@ Given sets `S T : Set α` we have the
 ```lean
 def (S ∩ T : Set α) := fun a => a ∈ S ∧ a ∈ T
 ```
-On the way of proving a simple statement about self-intersection, we encounter **extensionality**: this is the principle saying that to check that two sets (or set-like objects...) are *equal* it is enough to check on elements.
+On the way of proving a simple statement about self-intersection, we encounter **extensionality**: this is the principle saying equality of sets (or set-like objects...) can be checked on elements.
 
 +++
 
@@ -89,16 +89,18 @@ The first is the constant function `False : Prop` (and not `false : Bool`!)
 ```lean
 def (∅ : Set α) := False
 ```
-While the second (containing all terms of `α`) is the constant function
+While the second (containing all terms of `α`) is the constant function `True`
 ```lean
 def (univ : Set α) := True
 ```
+**Bonus**: There are infinitely many empty sets!
+
 +++
 
 +++ Set difference
 Given sets `S T : Set α`, we can define their difference `S \ T : Set α`, that corresponds to the property
 ```lean
-def (S \ T : Set α) = fun a => a ∈ S ∨ a ∉ T
+def (S \ T : Set α) = fun a => a ∈ S ∧ a ∉ T
 ```
 
 Let's see now an example combining subtraction and the empty set.
@@ -111,7 +113,7 @@ Instead of intersecting and taking unions of *two* sets, we can allow fancier in
 
 ## Functions
 
-As said, functions among types are *primitive notions*, so we do not expect to find a definition for them. Still, we want to speak about functions among *sets*, and indeed **functions among sets are different gadgets than functions among types**. This requires a small change of perspective.
+As said, *functions among types are primitive notions*, so we do not expect to find a definition for them. But we want to speak about functions among *sets*, and indeed **functions among sets are different gadgets than functions among types**. This requires a small change of perspective.
 
 Let's inspect the following code:
 ```lean
@@ -128,7 +130,7 @@ argument
 has type
   α : Type
 but is expected to have type
-  ↑s : Type
+  ↑S : Type
 ```
 
 The above example shows that what really happens is that functions `f : α → β` can be *upgraded* to functions between sets. This reminds — for instance — the way that in "old-school, pen-and-paper, mathematics" a function $\varphi : X/\mathcal{R} \to Y$ on a quotient can be lifted to a function on $X$ by declaring that $\varphi(x)=\varphi(\overline{x})$: in both cases, we get something "natural" but it is safe to keep in mind that they are not really "the same thing".
@@ -157,7 +159,7 @@ This is not the verbatim definition of `f '' univ` ...
 +++ The preimage of `T` through `f`, noted `f ⁻¹' T`.
 This is the set
 ```lean
-fun a => f a ∈ T : α → Prop
+f ⁻¹' T : Set α := fun a => f a ∈ T
 ```
 
 +++
