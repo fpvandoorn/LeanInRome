@@ -91,7 +91,7 @@ Let's see now an example combining subtraction and the empty set.
 +++
 
 +++ Indexed intersection and union
-Instead of interscting and taking unions of *two* sets, we can allow fancier indexing sets (that will actually be **types**, *ça va sans dire*): for the intersection, for instance, we have
+Instead of intersecting and taking unions of *two* sets, we can allow fancier indexing sets (that will actually be **types**, *ça va sans dire*): for the intersection, for instance, we have
 +++
 
 
