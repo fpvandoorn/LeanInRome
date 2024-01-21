@@ -45,16 +45,15 @@ example (α : Type) (S T : Set α) (h : T ⊆ S) : T \ S = ∅ := by
 /- ## Functions-/
 
 -- Functions do not natively act on elements of sets: how can we fix this code?
-example (α β : Type) (S : Set α) (f g : S → β) : f = g ↔ ∀ a : α,
-  -- a ∈ S → f a = g a :=
-  (ha : a ∈ S) → f ⟨a, ha⟩ = g ⟨a, ha⟩ := by
-  constructor
-  · intro hfg a ha
-    rw [hfg]
-  · intro H
-    funext ⟨a, ha⟩
-    specialize H a ha
-    exact H
+example (α β : Type) (S : Set α) (T : Set β) (f g : S → T) :
+  f = g ↔ ∀ a : α, a ∈ S → f a  = g a := by sorry
+  -- f = g ↔ ∀ a : α, (ha : a ∈ S) → f ⟨a, ha⟩ = g ⟨a, ha⟩ := by
+  -- constructor
+  -- · intro H a ha
+  --   rw [H]
+  -- · intro H
+  --   ext ⟨a, ha⟩
+  --   rw [H]
 
 
 variable (α β : Type) (f : α → β)

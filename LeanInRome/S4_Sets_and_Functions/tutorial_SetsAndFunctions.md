@@ -117,7 +117,7 @@ As said, *functions among types are primitive notions*, so we do not expect to f
 
 Let's inspect the following code:
 ```lean
-example (α β : Type) (S : Set α) (f g : S → β) :
+example (α β : Type) (S : Set α) (T : Set β) (f g : S → T) :
     f = g ↔ ∀ a : α, a ∈ S → f a = g a :=
 ```
 +++ It *seems* to say that given two functions `f, g` whose domain is a set `S` of elements in `α`, they are equal if and only if they coincide on every element of the domain, yet...
