@@ -20,11 +20,11 @@ Yet sometimes we really want to speak about *sets* as collections of elements an
 
 ### Basic features
 
-+++ Any set lives in a given type: it is a set of elements (*terms*) of a type:
++++ Every set lives in a given type: it is a set of elements (*terms*) of a type:
 ```lean
 variable (α : Type) (S : Set α)
 ```
-expresses that `α` is any type and `S` is a set of elements/terms of the type `α`. On the other hand,
+expresses that `α` is a type and `S` is a set of elements/terms of the type `α`. On the other hand,
 ```lean
 variable (S : Set)
 ```
@@ -33,7 +33,7 @@ does not mean "let `S` be a set": it means nothing and it is an error.
 
 +++ A set **coincides** with the test-function defining it.
 
- Given a type `α`, a set `S` (of `α`) is a *function*
+ Given a type `α`, a set `S` (of elements/terms of `α`) is a *function*
 ```lean
 S : α → Prop
 ```
@@ -54,7 +54,7 @@ Let's think old-stylish for a moment:
 1. A collection of elements of $S$.
 1. ... is there **any difference** whatsoever?!
 
-**Yes**: you can either stress the fact that it is a honest set satisfying some property; or the fact that it is a set whose "ambient space" is $S$. We take the **first approach**.
+*Yes and No*: you can either stress the fact that $T$ is a honest set satisfying some property; or the fact that it is a set whose elements "come from" $S$. We take the **first approach**.
 
 <!-- <br>
  -->
@@ -98,8 +98,9 @@ def (univ : Set α) := True
 +++
 
 +++ Set difference
-Given sets `S T : Set α`, we can define their difference `S \ T : Set α`, that corresponds to the property
+Given sets `S T : Set α`, we can define their difference `S \ T : Set α`, that corresponds to the property (where `a ∉ T` means of course `¬ a ∈ T`)
 ```lean
+def (S \ T : Set α) = fun a => a ∈ S ∧ ¬ a ∈ T
 def (S \ T : Set α) = fun a => a ∈ S ∧ a ∉ T
 ```
 
@@ -166,7 +167,7 @@ f ⁻¹' T : Set α := fun a => f a ∈ T
 
 +++ The function `f` is **injective on `S`**, denoted by `InjOn f S` if it is injective (a notion defined for functions **between types**) when restricted to `S`: this reads
 ```lean
-def : InjOn f S ↔ ∀ x₁ ∈ S, ∀ x₂ ∈ S, f x₁ = f x₂ → x₁ = x₂
+def : InjOn f S := ∀ x₁ ∈ S, ∀ x₂ ∈ S, f x₁ = f x₂ → x₁ = x₂
 ```
 
 In particular, the following equivalence is not a tautology:
