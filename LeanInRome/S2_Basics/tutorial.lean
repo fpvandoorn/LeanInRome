@@ -12,7 +12,7 @@ import Mathlib.Data.Real.Basic
 section
 
 /-
-Here, we introduce three real-number variables using `variable`.
+Here, we introduce two real-number variables using `variable`.
 `ℝ`  is typed as `\R`, followed by a space or tab character.
 -/
 variable (a b : ℝ)
@@ -26,7 +26,7 @@ variable (a b : ℝ)
 /-
 In Lean, theorems are types.
 
-Note `mul_comm a b` has type `a * b = a * b`. That is, `mul_comm u v` is a proof that
+Note `mul_comm a b` has type `a * b = a * b`. That is, `mul_comm a b` is a proof that
 `a * b = b * a`.
 -/
 
