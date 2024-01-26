@@ -124,7 +124,7 @@ example : (u * v) * w = v * (u * w) := by
   rw [mul_assoc]
 
 /-
-What happens if you remvove `u` in `rw [mul_comm u]`?
+What happens if you remove `u` in `rw [mul_comm u]`?
 -/
 
 /-
